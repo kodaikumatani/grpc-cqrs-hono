@@ -1,5 +1,5 @@
 {
-  "name": "grpc-cqrs-hono",
+  "name": "grpc-cqrs-connect",
   "private": true,
   "type": "module",
   "scripts": {

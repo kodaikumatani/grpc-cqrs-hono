@@ -1,17 +1,19 @@
-# grpc-cqrs-hono
+# grpc-cqrs-connect
 
-[grpc-cqrs-go](https://github.com/kodaikumatani/grpc-cqrs-go) の Hono (TypeScript) 版です。
+[grpc-cqrs-go](https://github.com/kodaikumatani/grpc-cqrs-go) の TypeScript (Connect RPC) 版です。
 同じ proto 定義を使い、Feature-first + CQRS 構成でレシピとユーザーの管理、
-および ReBAC による公開範囲・共有制御を行う API を提供します。
+および ReBAC による公開範囲・共有制御を行う gRPC API を提供します。
 
-> 🚧 WIP: 現在は proto のみ。実装はこれから。
+> 🚧 WIP: 現在は proto とコード生成のみ。実装はこれから。
 
 ## 技術スタック（予定）
 
-- **TypeScript / Hono** - アプリケーション
-- **Connect RPC** - proto ベースの API（Connect / gRPC-Web プロトコル）
-- **Buf** - Protobuf コード生成
+- **TypeScript / Node.js** - アプリケーション
+- **Connect RPC**（`@connectrpc/connect-node`）- gRPC サーバー（Node `http2` 上で gRPC プロトコルを提供）
+- **Buf / protoc-gen-es** - Protobuf コード生成
 - **PostgreSQL** - データベース
+
+技術選定の経緯は [JS / TS で gRPC を提供する場合の技術選定](#js--ts-で-grpc-を提供する場合の技術選定) を参照してください。
 
 ## API
 
