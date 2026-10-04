@@ -22,6 +22,29 @@ proto 定義は `proto/` にあります。grpc-cqrs-go から `UserService` / `
 | | `UpdateRecipe` | タイトル・説明を更新 | 不要 |
 | | `DeleteRecipe` | レシピを削除 | 不要 |
 
+## 実装スタイル
+
+class は意図的に使わず、factory 関数とクロージャで実装します。
+
+```ts
+export const createRecipeHandler = (repository: RecipeRepository) => ({
+  async getRecipe(req) {
+    const recipe = await repository.findById(req.id);
+    // ...
+  },
+});
+```
+
+- 依存は factory 関数の引数で受け取り、`this` ではなくクロージャで保持する
+- 型は `type` で定義する（abstract class や interface の実装 class は作らない）
+- デコレータは使わない
+
+### class を使わない理由
+
+- `this` の束縛を気にしなくてよい（メソッドを取り出して渡しても壊れない）
+- DI のためのデコレータ（`experimentalDecorators` / `emitDecoratorMetadata`）が不要で、`tsx`（esbuild）でもそのまま動く
+- テストでは factory 関数にモックを渡すだけで差し替えられる
+
 ## JS / TS で gRPC を提供する場合の技術選定
 
 ### 比較の軸
