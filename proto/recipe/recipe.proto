@@ -11,7 +11,7 @@ service RecipeService {
   rpc CreateRecipe(CreateRecipeRequest) returns (CreateRecipeResponse);
   rpc GetRecipe(GetRecipeRequest) returns (GetRecipeResponse);
   rpc UpdateRecipe(UpdateRecipeRequest) returns (UpdateRecipeResponse);
-  rpc ChangeVisibility(ChangeVisibilityRequest) returns (ChangeVisibilityResponse);
+  rpc DeleteRecipe(DeleteRecipeRequest) returns (DeleteRecipeResponse);
 }
 
 enum Visibility {
@@ -52,12 +52,8 @@ message UpdateRecipeRequest {
 
 message UpdateRecipeResponse { bool success = 1; }
 
-message ChangeVisibilityRequest {
+message DeleteRecipeRequest {
   string id = 1 [(buf.validate.field).string.uuid = true];
-  Visibility visibility = 2 [(buf.validate.field).enum = {
-    defined_only: true
-    not_in: [0]
-  }];
 }
 
-message ChangeVisibilityResponse { bool success = 1; }
+message DeleteRecipeResponse {}

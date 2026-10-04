@@ -13,7 +13,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file recipe/recipe.proto.
  */
 export const file_recipe_recipe: GenFile = /*@__PURE__*/
-  fileDesc("ChNyZWNpcGUvcmVjaXBlLnByb3RvEgZyZWNpcGUi0QEKBlJlY2lwZRIKCgJpZBgBIAEoCRIPCgd1c2VyX2lkGAIgASgJEg0KBXRpdGxlGAMgASgJEhMKC2Rlc2NyaXB0aW9uGAQgASgJEi4KCmNyZWF0ZWRfYXQYBSABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEi4KCnVwZGF0ZWRfYXQYBiABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEiYKCnZpc2liaWxpdHkYByABKA4yEi5yZWNpcGUuVmlzaWJpbGl0eSJOChNDcmVhdGVSZWNpcGVSZXF1ZXN0EhgKBXRpdGxlGAIgASgJQgm6SAZyBBABGGQSHQoLZGVzY3JpcHRpb24YAyABKAlCCLpIBXIDGOgHIikKFENyZWF0ZVJlY2lwZVJlc3BvbnNlEhEKCXJlY2lwZV9pZBgBIAEoCSIoChBHZXRSZWNpcGVSZXF1ZXN0EhQKAmlkGAEgASgJQgi6SAVyA7ABASIzChFHZXRSZWNpcGVSZXNwb25zZRIeCgZyZWNpcGUYASABKAsyDi5yZWNpcGUuUmVjaXBlImQKE1VwZGF0ZVJlY2lwZVJlcXVlc3QSFAoCaWQYASABKAlCCLpIBXIDsAEBEhgKBXRpdGxlGAIgASgJQgm6SAZyBBABGGQSHQoLZGVzY3JpcHRpb24YAyABKAlCCLpIBXIDGOgHIicKFFVwZGF0ZVJlY2lwZVJlc3BvbnNlEg8KB3N1Y2Nlc3MYASABKAgiYwoXQ2hhbmdlVmlzaWJpbGl0eVJlcXVlc3QSFAoCaWQYASABKAlCCLpIBXIDsAEBEjIKCnZpc2liaWxpdHkYAiABKA4yEi5yZWNpcGUuVmlzaWJpbGl0eUIKukgHggEEEAEgACIrChhDaGFuZ2VWaXNpYmlsaXR5UmVzcG9uc2USDwoHc3VjY2VzcxgBIAEoCCpyCgpWaXNpYmlsaXR5EhoKFlZJU0lCSUxJVFlfVU5TUEVDSUZJRUQQABIVChFWSVNJQklMSVRZX1BVQkxJQxABEhYKElZJU0lCSUxJVFlfUFJJVkFURRACEhkKFVZJU0lCSUxJVFlfUkVTVFJJQ1RFRBADMr4CCg1SZWNpcGVTZXJ2aWNlEkkKDENyZWF0ZVJlY2lwZRIbLnJlY2lwZS5DcmVhdGVSZWNpcGVSZXF1ZXN0GhwucmVjaXBlLkNyZWF0ZVJlY2lwZVJlc3BvbnNlEkAKCUdldFJlY2lwZRIYLnJlY2lwZS5HZXRSZWNpcGVSZXF1ZXN0GhkucmVjaXBlLkdldFJlY2lwZVJlc3BvbnNlEkkKDFVwZGF0ZVJlY2lwZRIbLnJlY2lwZS5VcGRhdGVSZWNpcGVSZXF1ZXN0GhwucmVjaXBlLlVwZGF0ZVJlY2lwZVJlc3BvbnNlElUKEENoYW5nZVZpc2liaWxpdHkSHy5yZWNpcGUuQ2hhbmdlVmlzaWJpbGl0eVJlcXVlc3QaIC5yZWNpcGUuQ2hhbmdlVmlzaWJpbGl0eVJlc3BvbnNlQjVaM2dpdGh1Yi5jb20va29kYWlrdW1hdGFuaS9ncnBjLWNxcnMtZ28vcGtnL3BiL3JlY2lwZWIGcHJvdG8z", [file_buf_validate_validate, file_google_protobuf_timestamp]);
+  fileDesc("ChNyZWNpcGUvcmVjaXBlLnByb3RvEgZyZWNpcGUi0QEKBlJlY2lwZRIKCgJpZBgBIAEoCRIPCgd1c2VyX2lkGAIgASgJEg0KBXRpdGxlGAMgASgJEhMKC2Rlc2NyaXB0aW9uGAQgASgJEi4KCmNyZWF0ZWRfYXQYBSABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEi4KCnVwZGF0ZWRfYXQYBiABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEiYKCnZpc2liaWxpdHkYByABKA4yEi5yZWNpcGUuVmlzaWJpbGl0eSJOChNDcmVhdGVSZWNpcGVSZXF1ZXN0EhgKBXRpdGxlGAIgASgJQgm6SAZyBBABGGQSHQoLZGVzY3JpcHRpb24YAyABKAlCCLpIBXIDGOgHIikKFENyZWF0ZVJlY2lwZVJlc3BvbnNlEhEKCXJlY2lwZV9pZBgBIAEoCSIoChBHZXRSZWNpcGVSZXF1ZXN0EhQKAmlkGAEgASgJQgi6SAVyA7ABASIzChFHZXRSZWNpcGVSZXNwb25zZRIeCgZyZWNpcGUYASABKAsyDi5yZWNpcGUuUmVjaXBlImQKE1VwZGF0ZVJlY2lwZVJlcXVlc3QSFAoCaWQYASABKAlCCLpIBXIDsAEBEhgKBXRpdGxlGAIgASgJQgm6SAZyBBABGGQSHQoLZGVzY3JpcHRpb24YAyABKAlCCLpIBXIDGOgHIicKFFVwZGF0ZVJlY2lwZVJlc3BvbnNlEg8KB3N1Y2Nlc3MYASABKAgiKwoTRGVsZXRlUmVjaXBlUmVxdWVzdBIUCgJpZBgBIAEoCUIIukgFcgOwAQEiFgoURGVsZXRlUmVjaXBlUmVzcG9uc2UqcgoKVmlzaWJpbGl0eRIaChZWSVNJQklMSVRZX1VOU1BFQ0lGSUVEEAASFQoRVklTSUJJTElUWV9QVUJMSUMQARIWChJWSVNJQklMSVRZX1BSSVZBVEUQAhIZChVWSVNJQklMSVRZX1JFU1RSSUNURUQQAzKyAgoNUmVjaXBlU2VydmljZRJJCgxDcmVhdGVSZWNpcGUSGy5yZWNpcGUuQ3JlYXRlUmVjaXBlUmVxdWVzdBocLnJlY2lwZS5DcmVhdGVSZWNpcGVSZXNwb25zZRJACglHZXRSZWNpcGUSGC5yZWNpcGUuR2V0UmVjaXBlUmVxdWVzdBoZLnJlY2lwZS5HZXRSZWNpcGVSZXNwb25zZRJJCgxVcGRhdGVSZWNpcGUSGy5yZWNpcGUuVXBkYXRlUmVjaXBlUmVxdWVzdBocLnJlY2lwZS5VcGRhdGVSZWNpcGVSZXNwb25zZRJJCgxEZWxldGVSZWNpcGUSGy5yZWNpcGUuRGVsZXRlUmVjaXBlUmVxdWVzdBocLnJlY2lwZS5EZWxldGVSZWNpcGVSZXNwb25zZUI1WjNnaXRodWIuY29tL2tvZGFpa3VtYXRhbmkvZ3JwYy1jcXJzLWdvL3BrZy9wYi9yZWNpcGViBnByb3RvMw", [file_buf_validate_validate, file_google_protobuf_timestamp]);
 
 /**
  * @generated from message recipe.Recipe
@@ -180,42 +180,33 @@ export const UpdateRecipeResponseSchema: GenMessage<UpdateRecipeResponse> = /*@_
   messageDesc(file_recipe_recipe, 6);
 
 /**
- * @generated from message recipe.ChangeVisibilityRequest
+ * @generated from message recipe.DeleteRecipeRequest
  */
-export type ChangeVisibilityRequest = Message<"recipe.ChangeVisibilityRequest"> & {
+export type DeleteRecipeRequest = Message<"recipe.DeleteRecipeRequest"> & {
   /**
    * @generated from field: string id = 1;
    */
   id: string;
-
-  /**
-   * @generated from field: recipe.Visibility visibility = 2;
-   */
-  visibility: Visibility;
 };
 
 /**
- * Describes the message recipe.ChangeVisibilityRequest.
- * Use `create(ChangeVisibilityRequestSchema)` to create a new message.
+ * Describes the message recipe.DeleteRecipeRequest.
+ * Use `create(DeleteRecipeRequestSchema)` to create a new message.
  */
-export const ChangeVisibilityRequestSchema: GenMessage<ChangeVisibilityRequest> = /*@__PURE__*/
+export const DeleteRecipeRequestSchema: GenMessage<DeleteRecipeRequest> = /*@__PURE__*/
   messageDesc(file_recipe_recipe, 7);
 
 /**
- * @generated from message recipe.ChangeVisibilityResponse
+ * @generated from message recipe.DeleteRecipeResponse
  */
-export type ChangeVisibilityResponse = Message<"recipe.ChangeVisibilityResponse"> & {
-  /**
-   * @generated from field: bool success = 1;
-   */
-  success: boolean;
+export type DeleteRecipeResponse = Message<"recipe.DeleteRecipeResponse"> & {
 };
 
 /**
- * Describes the message recipe.ChangeVisibilityResponse.
- * Use `create(ChangeVisibilityResponseSchema)` to create a new message.
+ * Describes the message recipe.DeleteRecipeResponse.
+ * Use `create(DeleteRecipeResponseSchema)` to create a new message.
  */
-export const ChangeVisibilityResponseSchema: GenMessage<ChangeVisibilityResponse> = /*@__PURE__*/
+export const DeleteRecipeResponseSchema: GenMessage<DeleteRecipeResponse> = /*@__PURE__*/
   messageDesc(file_recipe_recipe, 8);
 
 /**
@@ -278,12 +269,12 @@ export const RecipeService: GenService<{
     output: typeof UpdateRecipeResponseSchema;
   },
   /**
-   * @generated from rpc recipe.RecipeService.ChangeVisibility
+   * @generated from rpc recipe.RecipeService.DeleteRecipe
    */
-  changeVisibility: {
+  deleteRecipe: {
     methodKind: "unary";
-    input: typeof ChangeVisibilityRequestSchema;
-    output: typeof ChangeVisibilityResponseSchema;
+    input: typeof DeleteRecipeRequestSchema;
+    output: typeof DeleteRecipeResponseSchema;
   },
 }> = /*@__PURE__*/
   serviceDesc(file_recipe_recipe, 0);
