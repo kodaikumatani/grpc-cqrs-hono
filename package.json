@@ -4,8 +4,9 @@
   "type": "module",
   "scripts": {
     "generate": "buf generate",
+    "build": "tsc -p tsconfig.build.json",
     "dev": "tsx watch src/main.ts",
-    "start": "tsx src/main.ts",
+    "start": "node dist/main.js",
     "typecheck": "tsc",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate"
