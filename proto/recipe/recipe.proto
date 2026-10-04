@@ -4,6 +4,7 @@ package recipe;
 
 option go_package = "github.com/kodaikumatani/grpc-cqrs-go/pkg/pb/recipe";
 
+import "buf/validate/validate.proto";
 import "google/protobuf/timestamp.proto";
 
 service RecipeService {
@@ -31,27 +32,32 @@ message Recipe {
 }
 
 message CreateRecipeRequest {
-  string title = 2;
-  string description = 3;
+  string title = 2 [(buf.validate.field).string = {min_len: 1, max_len: 100}];
+  string description = 3 [(buf.validate.field).string.max_len = 1000];
 }
 
 message CreateRecipeResponse { string recipe_id = 1; }
 
-message GetRecipeRequest { string id = 1; }
+message GetRecipeRequest {
+  string id = 1 [(buf.validate.field).string.uuid = true];
+}
 
 message GetRecipeResponse { Recipe recipe = 1; }
 
 message UpdateRecipeRequest {
-  string id = 1;
-  string title = 2;
-  string description = 3;
+  string id = 1 [(buf.validate.field).string.uuid = true];
+  string title = 2 [(buf.validate.field).string = {min_len: 1, max_len: 100}];
+  string description = 3 [(buf.validate.field).string.max_len = 1000];
 }
 
 message UpdateRecipeResponse { bool success = 1; }
 
 message ChangeVisibilityRequest {
-  string id = 1;
-  Visibility visibility = 2;
+  string id = 1 [(buf.validate.field).string.uuid = true];
+  Visibility visibility = 2 [(buf.validate.field).enum = {
+    defined_only: true
+    not_in: [0]
+  }];
 }
 
 message ChangeVisibilityResponse { bool success = 1; }

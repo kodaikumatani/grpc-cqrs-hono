@@ -11,12 +11,18 @@ importers:
       '@bufbuild/protobuf':
         specifier: ^2.16.0
         version: 2.16.0
+      '@bufbuild/protovalidate':
+        specifier: ^1.3.0
+        version: 1.3.0(@bufbuild/protobuf@2.16.0)
       '@connectrpc/connect':
         specifier: ^2.2.0
         version: 2.2.0(@bufbuild/protobuf@2.16.0)
       '@connectrpc/connect-node':
         specifier: ^2.2.0
         version: 2.2.0(@bufbuild/protobuf@2.16.0)(@connectrpc/connect@2.2.0(@bufbuild/protobuf@2.16.0))
+      '@connectrpc/validate':
+        specifier: ^0.2.0
+        version: 0.2.0(@bufbuild/protobuf@2.16.0)(@bufbuild/protovalidate@1.3.0(@bufbuild/protobuf@2.16.0))(@connectrpc/connect@2.2.0(@bufbuild/protobuf@2.16.0))
     devDependencies:
       '@bufbuild/buf':
         specifier: ^1.73.0
@@ -83,6 +89,16 @@ packages:
     engines: {node: '>=12'}
     hasBin: true
 
+  '@bufbuild/cel-spec@0.6.1':
+    resolution: {integrity: sha512-m0Ac9qA669yxxC0Hy45qGsUZemjImVfxPl6r9jLbkJviEvv3R9hSYyH2ItGRbDguekX6eId0cb62ulNBK97ezg==}
+    peerDependencies:
+      '@bufbuild/protobuf': ^2.6.2
+
+  '@bufbuild/cel@0.6.1':
+    resolution: {integrity: sha512-tW7cvf5byb4zrVKsdkVk/UhD3dH6Q0hnfmeRyKaAGXx0pwebk7NjUgdR2GSwf74GXxkC7StMfgRLA2Ea/+zPKw==}
+    peerDependencies:
+      '@bufbuild/protobuf': ^2.6.2
+
   '@bufbuild/protobuf@2.16.0':
     resolution: {integrity: sha512-FWa0sPlqYGJgpTs6OxBRcL/AW4JT0OIO+W1ajerluoTVh8CV0B7XM1qsNCRgnkSCkRCgOICKHRQlY17jrsm0+Q==}
 
@@ -99,6 +115,14 @@ packages:
   '@bufbuild/protoplugin@2.16.0':
     resolution: {integrity: sha512-3FdYJys34VhFnBQsjiV9wurBkX/DBACQAkAk+nCKdO1p8ROVNi7gmaRAcba+4qq8hQq8rYVukuutwvGCvd4kJA==}
 
+  '@bufbuild/protovalidate@1.3.0':
+    resolution: {integrity: sha512-3GU0+0J/+vCk9/7Zply9XWjGLk08DcJsVNI9/e2FiPl+dIv6shBaRimkXouMs1GnPt7PueNW1vPJFGfh7O6VCA==}
+    peerDependencies:
+      '@bufbuild/protobuf': ^2.8.0
+
+  '@bufbuild/re2@0.6.1':
+    resolution: {integrity: sha512-VY7zV7bWKdAsf46epowVKidolEfMKw/FoHo2xYVDVzLj/hiP5qDL3nXqJt6seZClRYfG+uzAPFQBZBlj07wO5A==}
+
   '@connectrpc/connect-node@2.2.0':
     resolution: {integrity: sha512-E6uUO6e11WdynAuBjuN+0WpHjqxEM9BNDdfDIJHcn49Esg/WxSIbn2y1KFt9XL96IJi01qdBbvubcdpBz1X3Zw==}
     engines: {node: '>=22'}
@@ -110,6 +134,13 @@ packages:
     resolution: {integrity: sha512-M63OQ1ZFcPUm85CuewJ9G9CMV8LjzGR9935xOnXNQGSazAbwMb3x2W7vXBYM1zqrP7XFD8uxp/dUAhirclgwnQ==}
     peerDependencies:
       '@bufbuild/protobuf': ^2.7.0
+
+  '@connectrpc/validate@0.2.0':
+    resolution: {integrity: sha512-u1hdyt1WaFkKpuT/3J2wYlCjYLkYHMZamoatgxTIsV5Q8H9fO2px3zecmb0Q47YDjkZqnX6z0PAEstK+dNYiEQ==}
+    peerDependencies:
+      '@bufbuild/protobuf': ^2.9.0
+      '@bufbuild/protovalidate': ^1.0.0
+      '@connectrpc/connect': ^2.0.3
 
   '@esbuild/aix-ppc64@0.28.2':
     resolution: {integrity: sha512-XExcO+dvLKvVtNTibSTBej1NCAbaGhWn9Ww1ZPx80qsahhPFe/8jgWP0IchNe0F3HwkU7n8ejhH8bjonqht8mQ==}
@@ -468,6 +499,16 @@ snapshots:
       '@bufbuild/buf-win32-arm64': 1.73.0
       '@bufbuild/buf-win32-x64': 1.73.0
 
+  '@bufbuild/cel-spec@0.6.1(@bufbuild/protobuf@2.16.0)':
+    dependencies:
+      '@bufbuild/protobuf': 2.16.0
+
+  '@bufbuild/cel@0.6.1(@bufbuild/protobuf@2.16.0)':
+    dependencies:
+      '@bufbuild/cel-spec': 0.6.1(@bufbuild/protobuf@2.16.0)
+      '@bufbuild/protobuf': 2.16.0
+      '@bufbuild/re2': 0.6.1
+
   '@bufbuild/protobuf@2.16.0': {}
 
   '@bufbuild/protoc-gen-es@2.16.0(@bufbuild/protobuf@2.16.0)':
@@ -486,6 +527,14 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
+  '@bufbuild/protovalidate@1.3.0(@bufbuild/protobuf@2.16.0)':
+    dependencies:
+      '@bufbuild/cel': 0.6.1(@bufbuild/protobuf@2.16.0)
+      '@bufbuild/protobuf': 2.16.0
+      '@bufbuild/re2': 0.6.1
+
+  '@bufbuild/re2@0.6.1': {}
+
   '@connectrpc/connect-node@2.2.0(@bufbuild/protobuf@2.16.0)(@connectrpc/connect@2.2.0(@bufbuild/protobuf@2.16.0))':
     dependencies:
       '@bufbuild/protobuf': 2.16.0
@@ -494,6 +543,12 @@ snapshots:
   '@connectrpc/connect@2.2.0(@bufbuild/protobuf@2.16.0)':
     dependencies:
       '@bufbuild/protobuf': 2.16.0
+
+  '@connectrpc/validate@0.2.0(@bufbuild/protobuf@2.16.0)(@bufbuild/protovalidate@1.3.0(@bufbuild/protobuf@2.16.0))(@connectrpc/connect@2.2.0(@bufbuild/protobuf@2.16.0))':
+    dependencies:
+      '@bufbuild/protobuf': 2.16.0
+      '@bufbuild/protovalidate': 1.3.0(@bufbuild/protobuf@2.16.0)
+      '@connectrpc/connect': 2.2.0(@bufbuild/protobuf@2.16.0)
 
   '@esbuild/aix-ppc64@0.28.2':
     optional: true
