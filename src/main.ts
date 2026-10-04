@@ -2,12 +2,12 @@ import { createServer } from "node:http2";
 import { connectNodeAdapter } from "@connectrpc/connect-node";
 import { createValidateInterceptor } from "@connectrpc/validate";
 import { newDb } from "./db/client.js";
+import { newRecipeRepository } from "./db/recipe.js";
 import { errorInterceptor } from "./errors.js";
 import { Health } from "./gen/grpc/health/v1/health_pb.js";
 import { RecipeService } from "./gen/recipe/recipe_pb.js";
 import { healthService } from "./health.js";
 import { newRecipeHandler } from "./recipe/handler.js";
-import { newRecipeRepository } from "./recipe/repository.js";
 
 const port = Number(process.env.PORT ?? 50051);
 const databaseUrl = process.env.DATABASE_URL ?? "postgres://recipe:recipe@localhost:5432/recipe";
