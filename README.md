@@ -1,9 +1,6 @@
 # recipe-grpc-connect
 
 レシピの管理を行う gRPC API を、TypeScript と Connect RPC で提供します。
-認証・認可は実装しません。
-
-> 🚧 WIP: 現在は health check のみ実装済み。
 
 ## 技術スタック（予定）
 
