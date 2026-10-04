@@ -1,7 +1,6 @@
 import { randomUUID } from "node:crypto";
 import { timestampFromDate } from "@bufbuild/protobuf/wkt";
-import type { ServiceImpl } from "@connectrpc/connect";
-import { NotFoundError, UnauthenticatedError } from "../errors.js";
+import { Code, ConnectError, type ServiceImpl } from "@connectrpc/connect";
 import type { RecipeService } from "../gen/recipe/recipe_pb.js";
 import type { Recipe } from "./model.js";
 import type { RecipeRepository } from "./repository.js";
@@ -11,7 +10,7 @@ export const newRecipeHandler = (
 ): ServiceImpl<typeof RecipeService> => ({
   async createRecipe(req, ctx) {
     const userId = ctx.requestHeader.get("x-user-id");
-    if (!userId) throw new UnauthenticatedError("x-user-id is required");
+    if (!userId) throw new ConnectError("x-user-id is required", Code.Unauthenticated);
 
     const now = new Date();
     const recipe: Recipe = {
@@ -29,7 +28,7 @@ export const newRecipeHandler = (
 
   async getRecipe(req) {
     const recipe = await repository.findById(req.id);
-    if (!recipe) throw new NotFoundError(`recipe not found: ${req.id}`);
+    if (!recipe) throw new ConnectError(`recipe not found: ${req.id}`, Code.NotFound);
 
     return {
       recipe: {
@@ -45,7 +44,7 @@ export const newRecipeHandler = (
 
   async updateRecipe(req) {
     const recipe = await repository.findById(req.id);
-    if (!recipe) throw new NotFoundError(`recipe not found: ${req.id}`);
+    if (!recipe) throw new ConnectError(`recipe not found: ${req.id}`, Code.NotFound);
 
     const updated: Recipe = {
       ...recipe,
@@ -60,7 +59,7 @@ export const newRecipeHandler = (
 
   async deleteRecipe(req) {
     const deleted = await repository.delete(req.id);
-    if (!deleted) throw new NotFoundError(`recipe not found: ${req.id}`);
+    if (!deleted) throw new ConnectError(`recipe not found: ${req.id}`, Code.NotFound);
 
     return {};
   },

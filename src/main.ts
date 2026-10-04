@@ -17,7 +17,7 @@ const db = newDb(databaseUrl);
 const handler = connectNodeAdapter({
   // gRPC と Connect を受け付ける（gRPC-Web は無効）
   grpcWeb: false,
-  interceptors: [createValidateInterceptor(), errorInterceptor],
+  interceptors: [errorInterceptor, createValidateInterceptor()],
   routes: (router) => {
     router.service(Health, healthService);
     router.service(RecipeService, newRecipeHandler(newRecipeRepository(db)));
