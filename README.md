@@ -52,15 +52,16 @@ export const newRecipeHandler = (repository: RecipeRepository) => ({
 | 概要 | アプリケーション Framework（内部は grpc-js） | gRPC 公式実装 | Connect を Node `http2` に直接載せる | Connect を Fastify に載せる |
 | 対応プロトコル | gRPC | gRPC | gRPC / gRPC-Web / Connect | gRPC / gRPC-Web / Connect |
 | コード生成 | `ts-proto` / `proto-loader` | `ts-proto` / `proto-loader` | `protoc-gen-es` | `protoc-gen-es` |
-| HTTP エンドポイント | 書ける | 書けない | 自分で書く | 書ける |
+| RPC 以外の HTTP エンドポイント | 書ける | 書けない | 自分で書く | 書ける |
 | 運用機能（reflection / channelz / xDS） | grpc-js のものを使える | 公式で揃う | 自前で用意 | 自前で用意 |
 | 構成の自由度 | 低い（規約に従う） | 高い | 高い | 高い |
 | 注意点 | デコレータ・DI 前提、`tsx` では DI が動かない、CommonJS 前提 | コールバック形式の API | 依存は最小 | Fastify の分だけ層が増える |
-| 向いているケース | 構成を規約に任せたい、チーム開発 | gRPC 公式の運用機能が必要 | gRPC だけ提供する | `/metrics` や Webhook など HTTP も必要 |
+| 向いているケース | 構成を規約に任せたい、チーム開発 | gRPC 公式の運用機能が必要 | RPC だけ提供する | `/metrics` や Webhook など RPC 以外の HTTP も必要 |
 
 ### 結論
 
 - 基本は **connect-node**。このリポジトリもこれを使う
-- HTTP エンドポイントが必要になったら **connect-fastify** に移行する（サービス実装はそのまま使える）
+- `/metrics` や Webhook など RPC 以外の HTTP エンドポイントが必要になったら **connect-fastify** に移行する（サービス実装はそのまま使える）
+- RPC は Connect プロトコルで HTTP POST + JSON でも呼べるため、JSON で呼べるようにするためだけに REST を別に作る必要はない
 - gRPC 公式の運用機能が必要なら **`@grpc/grpc-js`**
 - 構成を Framework の規約に任せたいなら **NestJS**
