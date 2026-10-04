@@ -1,8 +1,8 @@
-# grpc-cqrs-connect
+# recipe-grpc-connect
 
-[grpc-cqrs-go](https://github.com/kodaikumatani/grpc-cqrs-go) の TypeScript (Connect RPC) 版です。
-同じ proto 定義・同じ Feature-first + CQRS 構成で、レシピとユーザーの管理を行う gRPC API を提供します。
-Go 版との違いとして、**認証・認可は実装しません**（[Go 版との違い](#go-版との違い) 参照）。
+レシピとユーザーの管理を行う gRPC API を、TypeScript と Connect RPC で提供します。
+proto 定義は [grpc-cqrs-go](https://github.com/kodaikumatani/grpc-cqrs-go) と同じものを使います。
+認証・認可は実装しません。
 
 > 🚧 WIP: 現在は proto とコード生成のみ。実装はこれから。
 
@@ -15,53 +15,23 @@ Go 版との違いとして、**認証・認可は実装しません**（[Go 版
 
 技術選定の経緯は [JS / TS で gRPC を提供する場合の技術選定](#js--ts-で-grpc-を提供する場合の技術選定) を参照してください。
 
-## アーキテクチャ（予定）
+## 認証・認可
 
-Go 版と同じく Feature-first + CQRS を採用し、フィーチャごとに Command（書き込み）と Query（読み取り）を分離します。
-Go 版の `internal/authz`（ReBAC）と認証 interceptor に相当するものは持ちません。
+認証・認可は実装しません。proto 上は認可を前提とした RPC（visibility、共有）もありますが、次のように扱います。
 
-```
-src/
-├── main.ts                 # サーバーエントリーポイント（connect-node + http2）
-├── app/                    # アプリケーション層（フィーチャ単位）
-│   ├── recipe/
-│   │   ├── command/        #   書き込み (Create, Update, UpdateVisibility)
-│   │   ├── query/          #   読み取り (Get)
-│   │   ├── entity/         #   エンティティ (Recipe, Visibility)
-│   │   └── handler.ts      #   RPC ハンドラー
-│   ├── user/
-│   │   ├── command/        #   書き込み (CreateUser)
-│   │   ├── entity/         #   エンティティ (User)
-│   │   └── handler.ts
-│   ├── share/
-│   │   ├── command.ts      #   ShareRecipe（tuple 保存のみ）
-│   │   └── handler.ts
-│   └── routes.ts           #   サービス登録
-├── identity/               # x-user-id ヘッダから現在ユーザーを取り出す（検証なし）
-├── db/                     # データベース層（エンティティ単位: recipe / user / tuple）
-├── interceptor/            # エラー変換・ログ
-├── health/                 # grpc.health.v1.Health
-└── gen/                    # protoc-gen-es 生成コード
-```
+| 項目 | 扱い |
+| --- | --- |
+| 認証 | なし。`x-user-id` メタデータの値を検証せずにそのまま現在ユーザーとして使う |
+| 認可 | なし。権限チェックは行わない |
+| Visibility | 値の保存・更新のみ。`GetRecipe` は visibility に関係なく返す |
+| `ShareRecipe` | 誰でも実行でき、relation を保存するだけ（判定には使わない） |
 
-- Storage インターフェースで app 層と DB 層を疎結合にする（依存の向きは `db → app`）
-- DB 層はエンティティ単位で実装し、CQRS の read/write の差は app 側の interface で表現する
-
-## Go 版との違い
-
-| 項目 | Go 版 | 本リポジトリ |
-| --- | --- | --- |
-| 認証 | 前段ゲートウェイが JWT を検証し、検証済み ID をヘッダで渡す | **なし**。`x-user-id` メタデータの値を検証せずにそのまま現在ユーザーとして使う |
-| 認可（ReBAC） | relation tuple で owner / editor / viewer を判定 | **なし**。権限チェックは行わない |
-| Visibility | public / private / restricted で GetRecipe の可否を判定 | 値の保存・更新のみ。GetRecipe は visibility に関係なく返す |
-| ShareRecipe | owner のみ実行でき、tuple を付与する | 誰でも実行でき、tuple を保存するだけ（判定には使わない） |
-
-`x-user-id` は作成者（`CreateRecipe` の owner）と `CreateUser` の user id を決めるためだけに使います。
-proto を Go 版と同一に保つため、リクエストに user_id を追加せずメタデータで受け取ります。
+`x-user-id` は作成者（`CreateRecipe`）と `CreateUser` の user id を決めるためだけに使います。
+proto を変えずに済むよう、リクエストに user_id を追加せずメタデータで受け取ります。
 
 ## API
 
-proto 定義は `proto/` にあり、Go 版と同一です（`go_package` オプションも Go 版のまま）。
+proto 定義は `proto/` にあり、grpc-cqrs-go と同一です（`go_package` オプションもそのまま）。
 
 | Service | RPC | 内容 | `x-user-id` |
 | --- | --- | --- | --- |
@@ -70,9 +40,7 @@ proto 定義は `proto/` にあり、Go 版と同一です（`go_package` オプ
 | | `GetRecipe` | レシピと作成者を取得 | 不要 |
 | | `UpdateRecipe` | タイトル・説明を更新 | 不要 |
 | | `ChangeVisibility` | visibility を更新 | 不要 |
-| `share.ShareService` | `ShareRecipe` | 対象ユーザーに relation（`viewer` / `editor`）の tuple を保存 | 不要 |
-
-エラー処理の方針は Go 版の README を参照してください。
+| `share.ShareService` | `ShareRecipe` | 対象ユーザーに relation（`viewer` / `editor`）を保存 | 不要 |
 
 ## JS / TS で gRPC を提供する場合の技術選定
 
@@ -111,7 +79,7 @@ gRPC は `@nestjs/microservices` の `Transport.GRPC` で提供し、内部で�
 #### メリット
 
 - 認証（Guard）、共通処理（Interceptor）、検証（Pipe）、エラー変換（Exception Filter）の置き場所が決まっており、設計判断が少ない
-- `@nestjs/cqrs` があり、このプロジェクトの CQRS 構成をそのまま載せられる
+- `@nestjs/cqrs` などの公式モジュールで、CQRS などの構成をそのまま載せられる
 - 規約に沿うため、チーム開発で構成がぶれにくい
 - gRPC 実装が `@grpc/grpc-js` なので、gRPC 公式の実績・運用機能をそのまま使える
 - 情報量が多い（日本語の記事も含む）

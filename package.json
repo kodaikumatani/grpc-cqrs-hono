@@ -1,5 +1,5 @@
 {
-  "name": "grpc-cqrs-connect",
+  "name": "recipe-grpc-connect",
   "private": true,
   "type": "module",
   "scripts": {
