@@ -1,12 +1,12 @@
 import { create } from "@bufbuild/protobuf";
 import { timestampFromDate } from "@bufbuild/protobuf/wkt";
 import type { ServiceImpl } from "@connectrpc/connect";
+import { NotFoundError } from "../errors.js";
 import {
   GetRecipeResponseSchema,
   RecipeSchema,
   type RecipeService,
 } from "../gen/recipe/recipe_pb.js";
-import { NotFoundError } from "../errors.js";
 import type { RecipeRepository } from "./repository.js";
 
 export const createRecipeHandler = (

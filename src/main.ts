@@ -10,8 +10,7 @@ import { createRecipeHandler } from "./recipe/handler.js";
 import { createRecipeRepository } from "./recipe/repository.js";
 
 const port = Number(process.env.PORT ?? 50051);
-const databaseUrl =
-  process.env.DATABASE_URL ?? "postgres://recipe:recipe@localhost:5432/recipe";
+const databaseUrl = process.env.DATABASE_URL ?? "postgres://recipe:recipe@localhost:5432/recipe";
 
 const db = createDb(databaseUrl);
 
