@@ -1,16 +1,8 @@
 import { randomUUID } from "node:crypto";
-import { create } from "@bufbuild/protobuf";
 import { timestampFromDate } from "@bufbuild/protobuf/wkt";
 import type { ServiceImpl } from "@connectrpc/connect";
 import { NotFoundError, UnauthenticatedError } from "../errors.js";
-import {
-  CreateRecipeResponseSchema,
-  DeleteRecipeResponseSchema,
-  GetRecipeResponseSchema,
-  RecipeSchema,
-  type RecipeService,
-  UpdateRecipeResponseSchema,
-} from "../gen/recipe/recipe_pb.js";
+import type { RecipeService } from "../gen/recipe/recipe_pb.js";
 import type { Recipe } from "./model.js";
 import type { RecipeRepository } from "./repository.js";
 
@@ -32,23 +24,23 @@ export const createRecipeHandler = (
     };
     await repository.create(recipe);
 
-    return create(CreateRecipeResponseSchema, { recipeId: recipe.id });
+    return { recipeId: recipe.id };
   },
 
   async getRecipe(req) {
     const recipe = await repository.findById(req.id);
     if (!recipe) throw new NotFoundError(`recipe not found: ${req.id}`);
 
-    return create(GetRecipeResponseSchema, {
-      recipe: create(RecipeSchema, {
+    return {
+      recipe: {
         id: recipe.id,
         userId: recipe.userId,
         title: recipe.title,
         description: recipe.description,
         createdAt: timestampFromDate(recipe.createdAt),
         updatedAt: timestampFromDate(recipe.updatedAt),
-      }),
-    });
+      },
+    };
   },
 
   async updateRecipe(req) {
@@ -63,13 +55,13 @@ export const createRecipeHandler = (
     };
     await repository.update(updated);
 
-    return create(UpdateRecipeResponseSchema, { success: true });
+    return { success: true };
   },
 
   async deleteRecipe(req) {
     const deleted = await repository.delete(req.id);
     if (!deleted) throw new NotFoundError(`recipe not found: ${req.id}`);
 
-    return create(DeleteRecipeResponseSchema, {});
+    return {};
   },
 });
