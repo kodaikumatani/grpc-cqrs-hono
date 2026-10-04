@@ -2,12 +2,15 @@
 
 レシピの管理を行う gRPC API を、TypeScript と Connect RPC で提供します。
 
-## 技術スタック（予定）
+## 技術スタック
 
 - **TypeScript / Node.js** - アプリケーション
 - **Connect RPC**（`@connectrpc/connect-node`）- gRPC サーバー（Node `http2` 上で gRPC プロトコルを提供）
 - **Buf / protoc-gen-es** - Protobuf コード生成
+- **protovalidate**（`@connectrpc/validate`）- proto に書いたルールでリクエストを検証
 - **PostgreSQL** - データベース
+- **Drizzle ORM** - DB アクセスとマイグレーション
+- **Biome** - lint / format
 
 技術選定の経緯は [JS / TS で gRPC を提供する場合の技術選定](#js--ts-で-grpc-を提供する場合の技術選定) を参照してください。
 
