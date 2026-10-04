@@ -1,8 +1,8 @@
 # grpc-cqrs-connect
 
 [grpc-cqrs-go](https://github.com/kodaikumatani/grpc-cqrs-go) の TypeScript (Connect RPC) 版です。
-同じ proto 定義を使い、Feature-first + CQRS 構成でレシピとユーザーの管理、
-および ReBAC による公開範囲・共有制御を行う gRPC API を提供します。
+同じ proto 定義・同じ Feature-first + CQRS 構成で、レシピとユーザーの管理を行う gRPC API を提供します。
+Go 版との違いとして、**認証・認可は実装しません**（[Go 版との違い](#go-版との違い) 参照）。
 
 > 🚧 WIP: 現在は proto とコード生成のみ。実装はこれから。
 
@@ -15,20 +15,64 @@
 
 技術選定の経緯は [JS / TS で gRPC を提供する場合の技術選定](#js--ts-で-grpc-を提供する場合の技術選定) を参照してください。
 
+## アーキテクチャ（予定）
+
+Go 版と同じく Feature-first + CQRS を採用し、フィーチャごとに Command（書き込み）と Query（読み取り）を分離します。
+Go 版の `internal/authz`（ReBAC）と認証 interceptor に相当するものは持ちません。
+
+```
+src/
+├── main.ts                 # サーバーエントリーポイント（connect-node + http2）
+├── app/                    # アプリケーション層（フィーチャ単位）
+│   ├── recipe/
+│   │   ├── command/        #   書き込み (Create, Update, UpdateVisibility)
+│   │   ├── query/          #   読み取り (Get)
+│   │   ├── entity/         #   エンティティ (Recipe, Visibility)
+│   │   └── handler.ts      #   RPC ハンドラー
+│   ├── user/
+│   │   ├── command/        #   書き込み (CreateUser)
+│   │   ├── entity/         #   エンティティ (User)
+│   │   └── handler.ts
+│   ├── share/
+│   │   ├── command.ts      #   ShareRecipe（tuple 保存のみ）
+│   │   └── handler.ts
+│   └── routes.ts           #   サービス登録
+├── identity/               # x-user-id ヘッダから現在ユーザーを取り出す（検証なし）
+├── db/                     # データベース層（エンティティ単位: recipe / user / tuple）
+├── interceptor/            # エラー変換・ログ
+├── health/                 # grpc.health.v1.Health
+└── gen/                    # protoc-gen-es 生成コード
+```
+
+- Storage インターフェースで app 層と DB 層を疎結合にする（依存の向きは `db → app`）
+- DB 層はエンティティ単位で実装し、CQRS の read/write の差は app 側の interface で表現する
+
+## Go 版との違い
+
+| 項目 | Go 版 | 本リポジトリ |
+| --- | --- | --- |
+| 認証 | 前段ゲートウェイが JWT を検証し、検証済み ID をヘッダで渡す | **なし**。`x-user-id` メタデータの値を検証せずにそのまま現在ユーザーとして使う |
+| 認可（ReBAC） | relation tuple で owner / editor / viewer を判定 | **なし**。権限チェックは行わない |
+| Visibility | public / private / restricted で GetRecipe の可否を判定 | 値の保存・更新のみ。GetRecipe は visibility に関係なく返す |
+| ShareRecipe | owner のみ実行でき、tuple を付与する | 誰でも実行でき、tuple を保存するだけ（判定には使わない） |
+
+`x-user-id` は作成者（`CreateRecipe` の owner）と `CreateUser` の user id を決めるためだけに使います。
+proto を Go 版と同一に保つため、リクエストに user_id を追加せずメタデータで受け取ります。
+
 ## API
 
 proto 定義は `proto/` にあり、Go 版と同一です（`go_package` オプションも Go 版のまま）。
 
-| Service | RPC | 認可 |
-| --- | --- | --- |
-| `user.UserService` | `CreateUser` | 要認証 |
-| `recipe.RecipeService` | `CreateRecipe` | 要認証 |
-| | `GetRecipe` | visibility に応じる |
-| | `UpdateRecipe` | editor 以上 |
-| | `ChangeVisibility` | owner のみ |
-| `share.ShareService` | `ShareRecipe` | owner のみ |
+| Service | RPC | 内容 | `x-user-id` |
+| --- | --- | --- | --- |
+| `user.UserService` | `CreateUser` | ユーザーを登録（user id = `x-user-id`） | 必須 |
+| `recipe.RecipeService` | `CreateRecipe` | レシピを作成（作成者 = `x-user-id`、`private` 初期） | 必須 |
+| | `GetRecipe` | レシピと作成者を取得 | 不要 |
+| | `UpdateRecipe` | タイトル・説明を更新 | 不要 |
+| | `ChangeVisibility` | visibility を更新 | 不要 |
+| `share.ShareService` | `ShareRecipe` | 対象ユーザーに relation（`viewer` / `editor`）の tuple を保存 | 不要 |
 
-認証・認可（ReBAC）・エラー処理の設計方針は Go 版の README を参照してください。
+エラー処理の方針は Go 版の README を参照してください。
 
 ## JS / TS で gRPC を提供する場合の技術選定
 
@@ -63,21 +107,6 @@ proto 定義は `proto/` にあり、Go 版と同一です（`go_package` オプ
 
 NestJS はバックエンドの構成・設計規約まで提供するアプリケーション Framework（Spring に近い）。
 gRPC は `@nestjs/microservices` の `Transport.GRPC` で提供し、内部では `@grpc/grpc-js` を使う。
-
-#### gRPC で使える主な機能
-
-| 機能 | 内容 |
-| --- | --- |
-| `@GrpcMethod` / `@GrpcStreamMethod` | Controller のメソッドを RPC に対応付けるデコレータ |
-| DI / Module | Service・Repository などの依存を Framework が組み立てる |
-| Guard | RPC の前に認証・認可を判定する。ReBAC の権限チェックの置き場所になる |
-| Interceptor | ログ・計測・レスポンス変換など、RPC の前後に共通処理を挟む |
-| Pipe | リクエストの検証・変換（`class-validator` など） |
-| Exception Filter | 例外を gRPC のステータスコードに変換する（`RpcException`） |
-| `@nestjs/cqrs` | CommandBus / QueryBus / EventBus による CQRS |
-| Hybrid Application | 1 つのアプリで gRPC と HTTP（`/metrics` など）を別ポートで同時に提供する |
-| `@nestjs/testing` | DI のモック差し替えを含むテスト用モジュール |
-| 公式連携 | Config、TypeORM / Prisma / MikroORM などの ORM 連携 |
 
 #### メリット
 
