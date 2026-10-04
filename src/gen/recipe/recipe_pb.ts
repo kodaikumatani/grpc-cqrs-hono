@@ -12,7 +12,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file recipe/recipe.proto.
  */
 export const file_recipe_recipe: GenFile = /*@__PURE__*/
-  fileDesc("ChNyZWNpcGUvcmVjaXBlLnByb3RvEgZyZWNpcGUi0QEKBlJlY2lwZRIKCgJpZBgBIAEoCRIPCgd1c2VyX2lkGAIgASgJEg0KBXRpdGxlGAMgASgJEhMKC2Rlc2NyaXB0aW9uGAQgASgJEi4KCmNyZWF0ZWRfYXQYBSABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEi4KCnVwZGF0ZWRfYXQYBiABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEiYKCnZpc2liaWxpdHkYByABKA4yEi5yZWNpcGUuVmlzaWJpbGl0eSI5ChNDcmVhdGVSZWNpcGVSZXF1ZXN0Eg0KBXRpdGxlGAIgASgJEhMKC2Rlc2NyaXB0aW9uGAMgASgJIikKFENyZWF0ZVJlY2lwZVJlc3BvbnNlEhEKCXJlY2lwZV9pZBgBIAEoCSIeChBHZXRSZWNpcGVSZXF1ZXN0EgoKAmlkGAEgASgJIk8KEUdldFJlY2lwZVJlc3BvbnNlEh4KBnJlY2lwZRgBIAEoCzIOLnJlY2lwZS5SZWNpcGUSGgoEdXNlchgCIAEoCzIMLnJlY2lwZS5Vc2VyIi8KBFVzZXISCgoCaWQYASABKAkSDAoEbmFtZRgCIAEoCRINCgVlbWFpbBgDIAEoCSJFChNVcGRhdGVSZWNpcGVSZXF1ZXN0EgoKAmlkGAEgASgJEg0KBXRpdGxlGAIgASgJEhMKC2Rlc2NyaXB0aW9uGAMgASgJIicKFFVwZGF0ZVJlY2lwZVJlc3BvbnNlEg8KB3N1Y2Nlc3MYASABKAgiTQoXQ2hhbmdlVmlzaWJpbGl0eVJlcXVlc3QSCgoCaWQYASABKAkSJgoKdmlzaWJpbGl0eRgCIAEoDjISLnJlY2lwZS5WaXNpYmlsaXR5IisKGENoYW5nZVZpc2liaWxpdHlSZXNwb25zZRIPCgdzdWNjZXNzGAEgASgIKnIKClZpc2liaWxpdHkSGgoWVklTSUJJTElUWV9VTlNQRUNJRklFRBAAEhUKEVZJU0lCSUxJVFlfUFVCTElDEAESFgoSVklTSUJJTElUWV9QUklWQVRFEAISGQoVVklTSUJJTElUWV9SRVNUUklDVEVEEAMyvgIKDVJlY2lwZVNlcnZpY2USSQoMQ3JlYXRlUmVjaXBlEhsucmVjaXBlLkNyZWF0ZVJlY2lwZVJlcXVlc3QaHC5yZWNpcGUuQ3JlYXRlUmVjaXBlUmVzcG9uc2USQAoJR2V0UmVjaXBlEhgucmVjaXBlLkdldFJlY2lwZVJlcXVlc3QaGS5yZWNpcGUuR2V0UmVjaXBlUmVzcG9uc2USSQoMVXBkYXRlUmVjaXBlEhsucmVjaXBlLlVwZGF0ZVJlY2lwZVJlcXVlc3QaHC5yZWNpcGUuVXBkYXRlUmVjaXBlUmVzcG9uc2USVQoQQ2hhbmdlVmlzaWJpbGl0eRIfLnJlY2lwZS5DaGFuZ2VWaXNpYmlsaXR5UmVxdWVzdBogLnJlY2lwZS5DaGFuZ2VWaXNpYmlsaXR5UmVzcG9uc2VCNVozZ2l0aHViLmNvbS9rb2RhaWt1bWF0YW5pL2dycGMtY3Fycy1nby9wa2cvcGIvcmVjaXBlYgZwcm90bzM", [file_google_protobuf_timestamp]);
+  fileDesc("ChNyZWNpcGUvcmVjaXBlLnByb3RvEgZyZWNpcGUi0QEKBlJlY2lwZRIKCgJpZBgBIAEoCRIPCgd1c2VyX2lkGAIgASgJEg0KBXRpdGxlGAMgASgJEhMKC2Rlc2NyaXB0aW9uGAQgASgJEi4KCmNyZWF0ZWRfYXQYBSABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEi4KCnVwZGF0ZWRfYXQYBiABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEiYKCnZpc2liaWxpdHkYByABKA4yEi5yZWNpcGUuVmlzaWJpbGl0eSI5ChNDcmVhdGVSZWNpcGVSZXF1ZXN0Eg0KBXRpdGxlGAIgASgJEhMKC2Rlc2NyaXB0aW9uGAMgASgJIikKFENyZWF0ZVJlY2lwZVJlc3BvbnNlEhEKCXJlY2lwZV9pZBgBIAEoCSIeChBHZXRSZWNpcGVSZXF1ZXN0EgoKAmlkGAEgASgJIjMKEUdldFJlY2lwZVJlc3BvbnNlEh4KBnJlY2lwZRgBIAEoCzIOLnJlY2lwZS5SZWNpcGUiRQoTVXBkYXRlUmVjaXBlUmVxdWVzdBIKCgJpZBgBIAEoCRINCgV0aXRsZRgCIAEoCRITCgtkZXNjcmlwdGlvbhgDIAEoCSInChRVcGRhdGVSZWNpcGVSZXNwb25zZRIPCgdzdWNjZXNzGAEgASgIIk0KF0NoYW5nZVZpc2liaWxpdHlSZXF1ZXN0EgoKAmlkGAEgASgJEiYKCnZpc2liaWxpdHkYAiABKA4yEi5yZWNpcGUuVmlzaWJpbGl0eSIrChhDaGFuZ2VWaXNpYmlsaXR5UmVzcG9uc2USDwoHc3VjY2VzcxgBIAEoCCpyCgpWaXNpYmlsaXR5EhoKFlZJU0lCSUxJVFlfVU5TUEVDSUZJRUQQABIVChFWSVNJQklMSVRZX1BVQkxJQxABEhYKElZJU0lCSUxJVFlfUFJJVkFURRACEhkKFVZJU0lCSUxJVFlfUkVTVFJJQ1RFRBADMr4CCg1SZWNpcGVTZXJ2aWNlEkkKDENyZWF0ZVJlY2lwZRIbLnJlY2lwZS5DcmVhdGVSZWNpcGVSZXF1ZXN0GhwucmVjaXBlLkNyZWF0ZVJlY2lwZVJlc3BvbnNlEkAKCUdldFJlY2lwZRIYLnJlY2lwZS5HZXRSZWNpcGVSZXF1ZXN0GhkucmVjaXBlLkdldFJlY2lwZVJlc3BvbnNlEkkKDFVwZGF0ZVJlY2lwZRIbLnJlY2lwZS5VcGRhdGVSZWNpcGVSZXF1ZXN0GhwucmVjaXBlLlVwZGF0ZVJlY2lwZVJlc3BvbnNlElUKEENoYW5nZVZpc2liaWxpdHkSHy5yZWNpcGUuQ2hhbmdlVmlzaWJpbGl0eVJlcXVlc3QaIC5yZWNpcGUuQ2hhbmdlVmlzaWJpbGl0eVJlc3BvbnNlQjVaM2dpdGh1Yi5jb20va29kYWlrdW1hdGFuaS9ncnBjLWNxcnMtZ28vcGtnL3BiL3JlY2lwZWIGcHJvdG8z", [file_google_protobuf_timestamp]);
 
 /**
  * @generated from message recipe.Recipe
@@ -125,11 +125,6 @@ export type GetRecipeResponse = Message<"recipe.GetRecipeResponse"> & {
    * @generated from field: recipe.Recipe recipe = 1;
    */
   recipe?: Recipe | undefined;
-
-  /**
-   * @generated from field: recipe.User user = 2;
-   */
-  user?: User | undefined;
 };
 
 /**
@@ -138,33 +133,6 @@ export type GetRecipeResponse = Message<"recipe.GetRecipeResponse"> & {
  */
 export const GetRecipeResponseSchema: GenMessage<GetRecipeResponse> = /*@__PURE__*/
   messageDesc(file_recipe_recipe, 4);
-
-/**
- * @generated from message recipe.User
- */
-export type User = Message<"recipe.User"> & {
-  /**
-   * @generated from field: string id = 1;
-   */
-  id: string;
-
-  /**
-   * @generated from field: string name = 2;
-   */
-  name: string;
-
-  /**
-   * @generated from field: string email = 3;
-   */
-  email: string;
-};
-
-/**
- * Describes the message recipe.User.
- * Use `create(UserSchema)` to create a new message.
- */
-export const UserSchema: GenMessage<User> = /*@__PURE__*/
-  messageDesc(file_recipe_recipe, 5);
 
 /**
  * @generated from message recipe.UpdateRecipeRequest
@@ -191,7 +159,7 @@ export type UpdateRecipeRequest = Message<"recipe.UpdateRecipeRequest"> & {
  * Use `create(UpdateRecipeRequestSchema)` to create a new message.
  */
 export const UpdateRecipeRequestSchema: GenMessage<UpdateRecipeRequest> = /*@__PURE__*/
-  messageDesc(file_recipe_recipe, 6);
+  messageDesc(file_recipe_recipe, 5);
 
 /**
  * @generated from message recipe.UpdateRecipeResponse
@@ -208,7 +176,7 @@ export type UpdateRecipeResponse = Message<"recipe.UpdateRecipeResponse"> & {
  * Use `create(UpdateRecipeResponseSchema)` to create a new message.
  */
 export const UpdateRecipeResponseSchema: GenMessage<UpdateRecipeResponse> = /*@__PURE__*/
-  messageDesc(file_recipe_recipe, 7);
+  messageDesc(file_recipe_recipe, 6);
 
 /**
  * @generated from message recipe.ChangeVisibilityRequest
@@ -230,7 +198,7 @@ export type ChangeVisibilityRequest = Message<"recipe.ChangeVisibilityRequest"> 
  * Use `create(ChangeVisibilityRequestSchema)` to create a new message.
  */
 export const ChangeVisibilityRequestSchema: GenMessage<ChangeVisibilityRequest> = /*@__PURE__*/
-  messageDesc(file_recipe_recipe, 8);
+  messageDesc(file_recipe_recipe, 7);
 
 /**
  * @generated from message recipe.ChangeVisibilityResponse
@@ -247,7 +215,7 @@ export type ChangeVisibilityResponse = Message<"recipe.ChangeVisibilityResponse"
  * Use `create(ChangeVisibilityResponseSchema)` to create a new message.
  */
 export const ChangeVisibilityResponseSchema: GenMessage<ChangeVisibilityResponse> = /*@__PURE__*/
-  messageDesc(file_recipe_recipe, 9);
+  messageDesc(file_recipe_recipe, 8);
 
 /**
  * @generated from enum recipe.Visibility

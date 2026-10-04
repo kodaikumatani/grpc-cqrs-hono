@@ -1,10 +1,10 @@
 # recipe-grpc-connect
 
-レシピとユーザーの管理を行う gRPC API を、TypeScript と Connect RPC で提供します。
-proto 定義は [grpc-cqrs-go](https://github.com/kodaikumatani/grpc-cqrs-go) と同じものを使います。
+レシピの管理を行う gRPC API を、TypeScript と Connect RPC で提供します。
+proto 定義は [grpc-cqrs-go](https://github.com/kodaikumatani/grpc-cqrs-go) のものから Recipe 以外を削除して使います。
 認証・認可は実装しません。
 
-> 🚧 WIP: 現在は proto とコード生成のみ。実装はこれから。
+> 🚧 WIP: 現在は health check のみ実装済み。
 
 ## 技術スタック（予定）
 
@@ -17,30 +17,27 @@ proto 定義は [grpc-cqrs-go](https://github.com/kodaikumatani/grpc-cqrs-go) �
 
 ## 認証・認可
 
-認証・認可は実装しません。proto 上は認可を前提とした RPC（visibility、共有）もありますが、次のように扱います。
+認証・認可は実装しません。proto 上は認可を前提とした項目（visibility）もありますが、次のように扱います。
 
 | 項目 | 扱い |
 | --- | --- |
 | 認証 | なし。`x-user-id` メタデータの値を検証せずにそのまま現在ユーザーとして使う |
 | 認可 | なし。権限チェックは行わない |
 | Visibility | 値の保存・更新のみ。`GetRecipe` は visibility に関係なく返す |
-| `ShareRecipe` | 誰でも実行でき、relation を保存するだけ（判定には使わない） |
 
-`x-user-id` は作成者（`CreateRecipe`）と `CreateUser` の user id を決めるためだけに使います。
+`x-user-id` は作成者（`CreateRecipe`）の user id を決めるためだけに使います。ユーザーの登録や存在チェックは行いません。
 proto を変えずに済むよう、リクエストに user_id を追加せずメタデータで受け取ります。
 
 ## API
 
-proto 定義は `proto/` にあり、grpc-cqrs-go と同一です（`go_package` オプションもそのまま）。
+proto 定義は `proto/` にあります。grpc-cqrs-go から `UserService` / `ShareService` と `GetRecipe` の作成者情報（`User`）を削除しています。
 
 | Service | RPC | 内容 | `x-user-id` |
 | --- | --- | --- | --- |
-| `user.UserService` | `CreateUser` | ユーザーを登録（user id = `x-user-id`） | 必須 |
 | `recipe.RecipeService` | `CreateRecipe` | レシピを作成（作成者 = `x-user-id`、`private` 初期） | 必須 |
-| | `GetRecipe` | レシピと作成者を取得 | 不要 |
+| | `GetRecipe` | レシピを取得 | 不要 |
 | | `UpdateRecipe` | タイトル・説明を更新 | 不要 |
 | | `ChangeVisibility` | visibility を更新 | 不要 |
-| `share.ShareService` | `ShareRecipe` | 対象ユーザーに relation（`viewer` / `editor`）を保存 | 不要 |
 
 ## JS / TS で gRPC を提供する場合の技術選定
 
