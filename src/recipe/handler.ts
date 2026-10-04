@@ -6,7 +6,7 @@ import type { RecipeService } from "../gen/recipe/recipe_pb.js";
 import type { Recipe } from "./model.js";
 import type { RecipeRepository } from "./repository.js";
 
-export const createRecipeHandler = (
+export const newRecipeHandler = (
   repository: RecipeRepository,
 ): ServiceImpl<typeof RecipeService> => ({
   async createRecipe(req, ctx) {

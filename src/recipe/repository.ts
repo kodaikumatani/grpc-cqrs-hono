@@ -11,7 +11,7 @@ export type RecipeRepository = {
   delete(id: string): Promise<boolean>;
 };
 
-export const createRecipeRepository = (db: Db): RecipeRepository => ({
+export const newRecipeRepository = (db: Db): RecipeRepository => ({
   async findById(id) {
     const [row] = await db.select().from(recipes).where(eq(recipes.id, id));
     return row;

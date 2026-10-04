@@ -27,7 +27,7 @@ proto 定義は `proto/` にあります。grpc-cqrs-go から `UserService` / `
 class は意図的に使わず、factory 関数とクロージャで実装します。
 
 ```ts
-export const createRecipeHandler = (repository: RecipeRepository) => ({
+export const newRecipeHandler = (repository: RecipeRepository) => ({
   async getRecipe(req) {
     const recipe = await repository.findById(req.id);
     // ...
