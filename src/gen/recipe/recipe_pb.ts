@@ -2,8 +2,8 @@
 // @generated from file recipe/recipe.proto (package recipe, syntax proto3)
 /* eslint-disable */
 
-import type { GenEnum, GenFile, GenMessage, GenService } from "@bufbuild/protobuf/codegenv2";
-import { enumDesc, fileDesc, messageDesc, serviceDesc } from "@bufbuild/protobuf/codegenv2";
+import type { GenFile, GenMessage, GenService } from "@bufbuild/protobuf/codegenv2";
+import { fileDesc, messageDesc, serviceDesc } from "@bufbuild/protobuf/codegenv2";
 import { file_buf_validate_validate } from "@bufbuild/protovalidate/gen/buf/validate/validate_pb.js";
 import type { Timestamp } from "@bufbuild/protobuf/wkt";
 import { file_google_protobuf_timestamp } from "@bufbuild/protobuf/wkt";
@@ -13,7 +13,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file recipe/recipe.proto.
  */
 export const file_recipe_recipe: GenFile = /*@__PURE__*/
-  fileDesc("ChNyZWNpcGUvcmVjaXBlLnByb3RvEgZyZWNpcGUi0QEKBlJlY2lwZRIKCgJpZBgBIAEoCRIPCgd1c2VyX2lkGAIgASgJEg0KBXRpdGxlGAMgASgJEhMKC2Rlc2NyaXB0aW9uGAQgASgJEi4KCmNyZWF0ZWRfYXQYBSABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEi4KCnVwZGF0ZWRfYXQYBiABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEiYKCnZpc2liaWxpdHkYByABKA4yEi5yZWNpcGUuVmlzaWJpbGl0eSJOChNDcmVhdGVSZWNpcGVSZXF1ZXN0EhgKBXRpdGxlGAIgASgJQgm6SAZyBBABGGQSHQoLZGVzY3JpcHRpb24YAyABKAlCCLpIBXIDGOgHIikKFENyZWF0ZVJlY2lwZVJlc3BvbnNlEhEKCXJlY2lwZV9pZBgBIAEoCSIoChBHZXRSZWNpcGVSZXF1ZXN0EhQKAmlkGAEgASgJQgi6SAVyA7ABASIzChFHZXRSZWNpcGVSZXNwb25zZRIeCgZyZWNpcGUYASABKAsyDi5yZWNpcGUuUmVjaXBlImQKE1VwZGF0ZVJlY2lwZVJlcXVlc3QSFAoCaWQYASABKAlCCLpIBXIDsAEBEhgKBXRpdGxlGAIgASgJQgm6SAZyBBABGGQSHQoLZGVzY3JpcHRpb24YAyABKAlCCLpIBXIDGOgHIicKFFVwZGF0ZVJlY2lwZVJlc3BvbnNlEg8KB3N1Y2Nlc3MYASABKAgiKwoTRGVsZXRlUmVjaXBlUmVxdWVzdBIUCgJpZBgBIAEoCUIIukgFcgOwAQEiFgoURGVsZXRlUmVjaXBlUmVzcG9uc2UqcgoKVmlzaWJpbGl0eRIaChZWSVNJQklMSVRZX1VOU1BFQ0lGSUVEEAASFQoRVklTSUJJTElUWV9QVUJMSUMQARIWChJWSVNJQklMSVRZX1BSSVZBVEUQAhIZChVWSVNJQklMSVRZX1JFU1RSSUNURUQQAzKyAgoNUmVjaXBlU2VydmljZRJJCgxDcmVhdGVSZWNpcGUSGy5yZWNpcGUuQ3JlYXRlUmVjaXBlUmVxdWVzdBocLnJlY2lwZS5DcmVhdGVSZWNpcGVSZXNwb25zZRJACglHZXRSZWNpcGUSGC5yZWNpcGUuR2V0UmVjaXBlUmVxdWVzdBoZLnJlY2lwZS5HZXRSZWNpcGVSZXNwb25zZRJJCgxVcGRhdGVSZWNpcGUSGy5yZWNpcGUuVXBkYXRlUmVjaXBlUmVxdWVzdBocLnJlY2lwZS5VcGRhdGVSZWNpcGVSZXNwb25zZRJJCgxEZWxldGVSZWNpcGUSGy5yZWNpcGUuRGVsZXRlUmVjaXBlUmVxdWVzdBocLnJlY2lwZS5EZWxldGVSZWNpcGVSZXNwb25zZUI1WjNnaXRodWIuY29tL2tvZGFpa3VtYXRhbmkvZ3JwYy1jcXJzLWdvL3BrZy9wYi9yZWNpcGViBnByb3RvMw", [file_buf_validate_validate, file_google_protobuf_timestamp]);
+  fileDesc("ChNyZWNpcGUvcmVjaXBlLnByb3RvEgZyZWNpcGUiqQEKBlJlY2lwZRIKCgJpZBgBIAEoCRIPCgd1c2VyX2lkGAIgASgJEg0KBXRpdGxlGAMgASgJEhMKC2Rlc2NyaXB0aW9uGAQgASgJEi4KCmNyZWF0ZWRfYXQYBSABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEi4KCnVwZGF0ZWRfYXQYBiABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wIk4KE0NyZWF0ZVJlY2lwZVJlcXVlc3QSGAoFdGl0bGUYAiABKAlCCbpIBnIEEAEYZBIdCgtkZXNjcmlwdGlvbhgDIAEoCUIIukgFcgMY6AciKQoUQ3JlYXRlUmVjaXBlUmVzcG9uc2USEQoJcmVjaXBlX2lkGAEgASgJIigKEEdldFJlY2lwZVJlcXVlc3QSFAoCaWQYASABKAlCCLpIBXIDsAEBIjMKEUdldFJlY2lwZVJlc3BvbnNlEh4KBnJlY2lwZRgBIAEoCzIOLnJlY2lwZS5SZWNpcGUiZAoTVXBkYXRlUmVjaXBlUmVxdWVzdBIUCgJpZBgBIAEoCUIIukgFcgOwAQESGAoFdGl0bGUYAiABKAlCCbpIBnIEEAEYZBIdCgtkZXNjcmlwdGlvbhgDIAEoCUIIukgFcgMY6AciJwoUVXBkYXRlUmVjaXBlUmVzcG9uc2USDwoHc3VjY2VzcxgBIAEoCCIrChNEZWxldGVSZWNpcGVSZXF1ZXN0EhQKAmlkGAEgASgJQgi6SAVyA7ABASIWChREZWxldGVSZWNpcGVSZXNwb25zZTKyAgoNUmVjaXBlU2VydmljZRJJCgxDcmVhdGVSZWNpcGUSGy5yZWNpcGUuQ3JlYXRlUmVjaXBlUmVxdWVzdBocLnJlY2lwZS5DcmVhdGVSZWNpcGVSZXNwb25zZRJACglHZXRSZWNpcGUSGC5yZWNpcGUuR2V0UmVjaXBlUmVxdWVzdBoZLnJlY2lwZS5HZXRSZWNpcGVSZXNwb25zZRJJCgxVcGRhdGVSZWNpcGUSGy5yZWNpcGUuVXBkYXRlUmVjaXBlUmVxdWVzdBocLnJlY2lwZS5VcGRhdGVSZWNpcGVSZXNwb25zZRJJCgxEZWxldGVSZWNpcGUSGy5yZWNpcGUuRGVsZXRlUmVjaXBlUmVxdWVzdBocLnJlY2lwZS5EZWxldGVSZWNpcGVSZXNwb25zZUI1WjNnaXRodWIuY29tL2tvZGFpa3VtYXRhbmkvZ3JwYy1jcXJzLWdvL3BrZy9wYi9yZWNpcGViBnByb3RvMw", [file_buf_validate_validate, file_google_protobuf_timestamp]);
 
 /**
  * @generated from message recipe.Recipe
@@ -48,11 +48,6 @@ export type Recipe = Message<"recipe.Recipe"> & {
    * @generated from field: google.protobuf.Timestamp updated_at = 6;
    */
   updatedAt?: Timestamp | undefined;
-
-  /**
-   * @generated from field: recipe.Visibility visibility = 7;
-   */
-  visibility: Visibility;
 };
 
 /**
@@ -208,37 +203,6 @@ export type DeleteRecipeResponse = Message<"recipe.DeleteRecipeResponse"> & {
  */
 export const DeleteRecipeResponseSchema: GenMessage<DeleteRecipeResponse> = /*@__PURE__*/
   messageDesc(file_recipe_recipe, 8);
-
-/**
- * @generated from enum recipe.Visibility
- */
-export enum Visibility {
-  /**
-   * @generated from enum value: VISIBILITY_UNSPECIFIED = 0;
-   */
-  UNSPECIFIED = 0,
-
-  /**
-   * @generated from enum value: VISIBILITY_PUBLIC = 1;
-   */
-  PUBLIC = 1,
-
-  /**
-   * @generated from enum value: VISIBILITY_PRIVATE = 2;
-   */
-  PRIVATE = 2,
-
-  /**
-   * @generated from enum value: VISIBILITY_RESTRICTED = 3;
-   */
-  RESTRICTED = 3,
-}
-
-/**
- * Describes the enum recipe.Visibility.
- */
-export const VisibilitySchema: GenEnum<Visibility> = /*@__PURE__*/
-  enumDesc(file_recipe_recipe, 0);
 
 /**
  * @generated from service recipe.RecipeService

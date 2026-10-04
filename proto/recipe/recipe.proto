@@ -14,13 +14,6 @@ service RecipeService {
   rpc DeleteRecipe(DeleteRecipeRequest) returns (DeleteRecipeResponse);
 }
 
-enum Visibility {
-  VISIBILITY_UNSPECIFIED = 0;
-  VISIBILITY_PUBLIC = 1;
-  VISIBILITY_PRIVATE = 2;
-  VISIBILITY_RESTRICTED = 3;
-}
-
 message Recipe {
   string id = 1;
   string user_id = 2;
@@ -28,7 +21,6 @@ message Recipe {
   string description = 4;
   google.protobuf.Timestamp created_at = 5;
   google.protobuf.Timestamp updated_at = 6;
-  Visibility visibility = 7;
 }
 
 message CreateRecipeRequest {
