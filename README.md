@@ -59,129 +59,70 @@ proto 定義は `proto/` にあり、Go 版と同一です（`go_package` オプ
 2. **② gRPC 実装は Connect が基本**。gRPC 公式の運用機能（xDS / reflection / channelz）が必要なら `@grpc/grpc-js`
 3. **③ Connect の場合、HTTP エンドポイントが不要なら connect-node**、`/metrics` や Webhook などが必要なら connect-fastify
 
-### ① NestJS と自分で組む構成の比較
+### ① NestJS を使うメリット・デメリット
 
-NestJS とマイクロ / Web Framework は分類が異なるため、機能の有無で比べるのは適切ではない。
+NestJS はバックエンドの構成・設計規約まで提供するアプリケーション Framework（Spring に近い）。
+gRPC は `@nestjs/microservices` の `Transport.GRPC` で提供し、内部では `@grpc/grpc-js` を使う。
 
-| 分類 | 例 | 役割 |
-| --- | --- | --- |
-| フルスタック Framework | Rails、Laravel、Next.js | 画面〜DB まで一式 |
-| アプリケーション Framework（opinionated） | **NestJS**、Spring | バックエンドの構成・設計規約まで提供する |
-| マイクロ / Web Framework | Hono、Express、Fastify | ルーティングとミドルウェアのみ。構成は自分で決める |
+#### gRPC で使える主な機能
 
-NestJS はフルスタックではなく、内部で Express / Fastify を HTTP 層として使う一段上の Framework。
-比べるなら「NestJS」対「gRPC 実装 + 自分で選んだライブラリの組み合わせ」であり、
-「規約に乗るか、自分で組むか」の選択になる。
+| 機能 | 内容 |
+| --- | --- |
+| `@GrpcMethod` / `@GrpcStreamMethod` | Controller のメソッドを RPC に対応付けるデコレータ |
+| DI / Module | Service・Repository などの依存を Framework が組み立てる |
+| Guard | RPC の前に認証・認可を判定する。ReBAC の権限チェックの置き場所になる |
+| Interceptor | ログ・計測・レスポンス変換など、RPC の前後に共通処理を挟む |
+| Pipe | リクエストの検証・変換（`class-validator` など） |
+| Exception Filter | 例外を gRPC のステータスコードに変換する（`RpcException`） |
+| `@nestjs/cqrs` | CommandBus / QueryBus / EventBus による CQRS |
+| Hybrid Application | 1 つのアプリで gRPC と HTTP（`/metrics` など）を別ポートで同時に提供する |
+| `@nestjs/testing` | DI のモック差し替えを含むテスト用モジュール |
+| 公式連携 | Config、TypeORM / Prisma / MikroORM などの ORM 連携 |
 
-| | NestJS | 自分で組む（connect-node など + ライブラリ） |
-| --- | --- | --- |
-| 構成 | Framework が決める | 自分で決める |
-| DI | 標準 | 必要なら tsyringe など。手動の組み立てで足りることも多い |
-| CQRS | `@nestjs/cqrs` | Command / Query ハンドラを自前で用意 |
-| gRPC 実装 | `@grpc/grpc-js` に固定 | Connect / `@grpc/grpc-js` から選べる |
-| コード生成 | `ts-proto` / `proto-loader` | gRPC 実装に合わせて選ぶ（Connect なら `protoc-gen-es`） |
-| 自由度 | 低い | 高い |
+#### メリット
+
+- 認証（Guard）、共通処理（Interceptor）、検証（Pipe）、エラー変換（Exception Filter）の置き場所が決まっており、設計判断が少ない
+- `@nestjs/cqrs` があり、このプロジェクトの CQRS 構成をそのまま載せられる
+- 規約に沿うため、チーム開発で構成がぶれにくい
+- gRPC 実装が `@grpc/grpc-js` なので、gRPC 公式の実績・運用機能をそのまま使える
+- 情報量が多い（日本語の記事も含む）
+
+#### デメリット
+
+- gRPC 実装は `@grpc/grpc-js` に固定され、Connect / gRPC-Web は提供できない（ブラウザから呼ぶにはプロキシが必要）
+- `protoc-gen-es` の生成コードは使えず、`ts-proto`（`nestJs=true`）か `proto-loader` に変更が必要
+- デコレータと DI の学習コスト・記述量がある。小さな API には仕組みが重い
+- `emitDecoratorMetadata` に依存するため、esbuild 系（`tsx` など）ではそのままでは DI が動かず、`tsc` か SWC でのビルドが必要
+- CommonJS 前提のため、ESM のプロジェクトと組み合わせると手間がかかる場合がある
+- 自分で組む構成（Connect + ライブラリ）に比べて自由度は低い
+
+#### 向いているケース
+
+- 認証・認可・CQRS などの構成を Framework の規約に任せたい
+- 複数人で開発し、構成の統一を優先したい
+- Connect / gRPC-Web が不要で、`@grpc/grpc-js` で問題ない
 
 ### ② Connect と `@grpc/grpc-js` の比較
 
 | 観点 | Connect | `@grpc/grpc-js` |
 | --- | --- | --- |
-| 開発元 | Buf | gRPC 公式（grpc.io） |
-| 実績 | 比較的新しい（v2） | 長い。Node の gRPC の事実上の標準で、NestJS も内部で使用 |
+| 開発元 | Buf | gRPC 公式 |
+| 実績 | 比較的新しい | 長い（事実上の標準） |
 | 対応プロトコル | gRPC / gRPC-Web / Connect | gRPC のみ |
-| API | async/await。ストリーミングは async iterable | コールバック形式（`call`, `callback`） |
-| コード生成 | `protoc-gen-es` | `proto-loader`（実行時読み込み・型なし）か `ts-proto` など |
-| 型安全性 | 生成コードと実装の型が自然につながる | 生成方法の選び方次第 |
-| 共通処理 | interceptor | interceptor（サーバー側の対応は比較的最近） |
-| 運用まわり | 自前で用意する部分が多い | reflection / health / channelz / xDS などの公式パッケージがある |
+| API | async/await | コールバック形式 |
+| コード生成 | `protoc-gen-es` | `ts-proto` / `proto-loader` |
+| 運用機能 | 自前で用意する部分が多い | reflection / health / channelz / xDS が公式で揃う |
 
-```ts
-// Connect
-router.service(UserService, {
-  async createUser(req) {
-    const id = await createUser(req.name, req.email);
-    return { userId: id };
-  },
-});
-```
-
-```ts
-// @grpc/grpc-js
-server.addService(UserServiceService, {
-  createUser(call, callback) {
-    createUser(call.request.name, call.request.email)
-      .then((id) => callback(null, { userId: id }))
-      .catch((err) => callback(err));
-  },
-});
-```
-
-基本は Connect を選ぶ。
-
-- `protoc-gen-es` の生成コードとサービス実装をそのまま使える
-- async/await で書けるため、CQRS の Command / Query ハンドラとつなぎやすい
-- Connect / gRPC-Web が後から必要になっても、作り直さずに設定で対応できる
-- gRPC の互換性テストを通しているとされ、Go などの gRPC クライアントからも呼べる想定（本プロジェクトでは未検証）
-
-次の場合は `@grpc/grpc-js` を選ぶ。
-
-- サービスメッシュで xDS を使いたい（Istio などの設定をプロキシを挟まずクライアントが直接受け取る構成）
-- reflection（`grpcurl` から定義を読み込む）や channelz（接続状況の確認）など、gRPC 公式の運用機能をそのまま使いたい
-- チームに grpc-js の経験があり、実績を重視したい
-
-reflection と health check は Connect でも自前で実装できる。Connect 向けの公式パッケージの有無は未確認。
+基本は Connect。xDS や reflection など gRPC 公式の運用機能が必要なら `@grpc/grpc-js`。
 
 ### ③ connect-node と connect-fastify の比較
 
-gRPC 実装はどちらも Connect で同じ。違いは Fastify を挟むかどうかだけ。
+gRPC 実装はどちらも Connect。違いは Fastify を挟むかどうかだけ。
 
 | 観点 | connect-node | connect-fastify |
 | --- | --- | --- |
-| 依存 | `@connectrpc/connect-node` のみ | Fastify 本体 + プラグイン |
-| 通常の HTTP ルート | 自分で書く | 書ける |
-| 共通処理 | Connect の interceptor | interceptor か Fastify の hook |
-| ログ | 自分で選ぶ（pino など） | pino が標準で付属 |
-| 構成の単純さ | ◎ | ○（層が一つ増える） |
+| 依存 | 最小 | Fastify 本体 + プラグイン |
+| HTTP ルート | 自分で書く | 書ける |
+| 構成 | シンプル | 層が一つ増える |
 
-```ts
-// connect-node
-import http2 from "node:http2";
-import { connectNodeAdapter } from "@connectrpc/connect-node";
-
-http2.createServer(connectNodeAdapter({ routes })).listen(8080);
-```
-
-```ts
-// connect-fastify
-import { fastify } from "fastify";
-import { fastifyConnectPlugin } from "@connectrpc/connect-fastify";
-
-const server = fastify({ http2: true });
-await server.register(fastifyConnectPlugin, { routes });
-server.get("/health", () => "ok");
-await server.listen({ port: 8080 });
-```
-
-gRPC のみなら connect-node で十分。
-
-- Fastify の強みは HTTP ルーティングとプラグインで、gRPC のみでは活きない
-- 認証・認可（ReBAC）・ログ・エラー変換は Connect の interceptor で書ける
-- ヘルスチェックは標準の `grpc.health.v1` を実装すればよい（Kubernetes も gRPC probe に対応）
-
-サービス実装（`router.service(...)`）は共通なので、HTTP エンドポイントが必要になった時点で起動部分だけ差し替えて connect-fastify に移行できる。
-
-### 補足: Connect のパッケージ構成
-
-| パッケージ | 役割 |
-| --- | --- |
-| `@connectrpc/connect` | コア。ルーター、サービス実装の型 |
-| `@connectrpc/connect-node` | Node 標準の `http` / `http2` サーバー用 |
-| `@connectrpc/connect-fastify` | Fastify 用（プラグイン） |
-| `@connectrpc/connect-express` | Express 用 |
-| `@connectrpc/connect-next` | Next.js 用 |
-
-### 補足: TLS なしの HTTP/2
-
-TLS なしの HTTP/2（h2c）で起動すると HTTP/1.1 の接続は受け付けない。
-gRPC クライアントは問題ないが、ブラウザや通常の `curl` からはつながらない。
-両方受けたい場合は TLS + `allowHTTP1` にするか、ポートを分ける。
+gRPC のみなら connect-node。HTTP エンドポイントが必要になったら、サービス実装はそのままで connect-fastify に移行できる。
