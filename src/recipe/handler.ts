@@ -2,7 +2,8 @@ import { randomUUID } from "node:crypto";
 import { timestampFromDate } from "@bufbuild/protobuf/wkt";
 import { Code, ConnectError, type ServiceImpl } from "@connectrpc/connect";
 import type { RecipeService } from "../gen/recipe/recipe_pb.js";
-import type { Recipe } from "./model.js";
+import { isRecipeTitleTakenError } from "./errors.js";
+import { Recipe } from "./model.js";
 import type { RecipeRepository } from "./repository.js";
 
 export const newRecipeHandler = (
@@ -21,6 +22,13 @@ export const newRecipeHandler = (
       createdAt: now,
       updatedAt: now,
     };
+
+    try {
+      await Recipe(repository).ensureTitleAvailable(recipe);
+    } catch (e) {
+      if (isRecipeTitleTakenError(e)) throw new ConnectError(e.message, Code.AlreadyExists);
+      throw e;
+    }
     await repository.create(recipe);
 
     return { recipeId: recipe.id };
@@ -52,6 +60,12 @@ export const newRecipeHandler = (
       description: req.description,
       updatedAt: new Date(),
     };
+    try {
+      await Recipe(repository).ensureTitleAvailable(updated);
+    } catch (e) {
+      if (isRecipeTitleTakenError(e)) throw new ConnectError(e.message, Code.AlreadyExists);
+      throw e;
+    }
     await repository.update(updated);
 
     return { success: true };

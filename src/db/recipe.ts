@@ -1,4 +1,4 @@
-import { eq } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 import type { RecipeRepository } from "../recipe/repository.js";
 import type { Db } from "./client.js";
 import { recipes } from "./schema.js";
@@ -6,6 +6,14 @@ import { recipes } from "./schema.js";
 export const newRecipeRepository = (db: Db): RecipeRepository => ({
   async findById(id) {
     const [row] = await db.select().from(recipes).where(eq(recipes.id, id));
+    return row;
+  },
+
+  async findByTitle(userId, title) {
+    const [row] = await db
+      .select()
+      .from(recipes)
+      .where(and(eq(recipes.userId, userId), eq(recipes.title, title)));
     return row;
   },
 
