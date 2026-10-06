@@ -22,8 +22,8 @@ proto 定義は `proto/` にあります。grpc-cqrs-go から `UserService` / `
 | --- | --- | --- | --- |
 | `recipe.RecipeService` | `CreateRecipe` | レシピを作成（作成者 = `x-user-id`） | 必須 |
 | | `GetRecipe` | レシピを取得 | 不要 |
-| | `UpdateRecipe` | タイトル・説明を更新 | 不要 |
-| | `DeleteRecipe` | レシピを削除 | 不要 |
+| | `UpdateRecipe` | タイトル・説明を更新（作成者のみ） | 必須 |
+| | `DeleteRecipe` | レシピを削除（作成者のみ） | 必須 |
 
 ## 実装スタイル
 

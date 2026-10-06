@@ -2,7 +2,7 @@ import { randomUUID } from "node:crypto";
 import { timestampFromDate } from "@bufbuild/protobuf/wkt";
 import { Code, ConnectError, type ServiceImpl } from "@connectrpc/connect";
 import type { RecipeService } from "../gen/recipe/recipe_pb.js";
-import { isRecipeTitleTakenError } from "./errors.js";
+import { RecipeNotOwnedError, RecipeTitleTakenError } from "./errors.js";
 import { Recipe } from "./model.js";
 import type { RecipeRepository } from "./repository.js";
 
@@ -26,7 +26,7 @@ export const newRecipeHandler = (
     try {
       await Recipe(repository).ensureTitleAvailable(recipe);
     } catch (e) {
-      if (isRecipeTitleTakenError(e)) throw new ConnectError(e.message, Code.AlreadyExists);
+      if (RecipeTitleTakenError.is(e)) throw new ConnectError(e.message, Code.AlreadyExists);
       throw e;
     }
     await repository.create(recipe);
@@ -50,7 +50,10 @@ export const newRecipeHandler = (
     };
   },
 
-  async updateRecipe(req) {
+  async updateRecipe(req, ctx) {
+    const userId = ctx.requestHeader.get("x-user-id");
+    if (!userId) throw new ConnectError("x-user-id is required", Code.Unauthenticated);
+
     const recipe = await repository.findById(req.id);
     if (!recipe) throw new ConnectError(`recipe not found: ${req.id}`, Code.NotFound);
 
@@ -61,9 +64,11 @@ export const newRecipeHandler = (
       updatedAt: new Date(),
     };
     try {
+      Recipe(repository).ensureOwnedBy(recipe, userId);
       await Recipe(repository).ensureTitleAvailable(updated);
     } catch (e) {
-      if (isRecipeTitleTakenError(e)) throw new ConnectError(e.message, Code.AlreadyExists);
+      if (RecipeNotOwnedError.is(e)) throw new ConnectError(e.message, Code.PermissionDenied);
+      if (RecipeTitleTakenError.is(e)) throw new ConnectError(e.message, Code.AlreadyExists);
       throw e;
     }
     await repository.update(updated);
@@ -71,8 +76,20 @@ export const newRecipeHandler = (
     return { success: true };
   },
 
-  async deleteRecipe(req) {
-    const deleted = await repository.delete(req.id);
+  async deleteRecipe(req, ctx) {
+    const userId = ctx.requestHeader.get("x-user-id");
+    if (!userId) throw new ConnectError("x-user-id is required", Code.Unauthenticated);
+
+    const recipe = await repository.findById(req.id);
+    if (!recipe) throw new ConnectError(`recipe not found: ${req.id}`, Code.NotFound);
+
+    try {
+      Recipe(repository).ensureOwnedBy(recipe, userId);
+    } catch (e) {
+      if (RecipeNotOwnedError.is(e)) throw new ConnectError(e.message, Code.PermissionDenied);
+      throw e;
+    }
+    const deleted = await repository.delete(recipe.id);
     if (!deleted) throw new ConnectError(`recipe not found: ${req.id}`, Code.NotFound);
 
     return {};
